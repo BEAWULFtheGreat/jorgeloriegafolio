@@ -81,9 +81,9 @@ let currentIntersects = [];
 let currentHoveredObject = null;
 
 const socialLinks = {
-    Instagram: "https://www.instagram.com/",
-    Facebook: "https://www.facebook.com/",
-    Youtube: "https://www.youtube.com/",
+    Instagram: "https://www.instagram.com/jay_arts03/",
+    Facebook: "https://www.facebook.com/jorge.loriega.2024",
+    Youtube: "https://www.youtube.com/@jay_arts03",
 };
 
 const raycaster = new THREE.Raycaster();
