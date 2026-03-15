@@ -1,30 +1,57 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>room-portfolio</title>
-  </head>
-  <body>
-    <div id="app"></div>
 
-    <div class="work modal"> 
-      <h1 class="modal-title">workworkworkworkworkworkworkwork</h1>
-      <button class="modal-exit-button">EXIT MODALLLLL</button>
-      </div>
-    <div class="about modal">  
-      <h1 class="modal-title">aboutaboutaboutaboutaboutabout</h1>
-      <button class="modal-exit-button">EXIT MODALLLLL</button>
-      </div>
-    <div class="contact modal"> 
-      <h1 class="modal-title">contact asdawqenmm qadwesadfs</h1>
-      <button class="modal-exit-button">EXIT MODALLLLL</button>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room Folio</title>
+</head>
 
-    <div id="experience">
-      <canvas id="experience-canvas" class="experience-canvas"></canvas>
+<body>
+
+  <div id="loading-screen">
+    <div class="loader-wrapper">
+      <h1 class="loader-title">Building Room...</h1>
+      <div class="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
+      <p id="progress-text">0%</p>
     </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+  </div>
+
+  <div id="app"></div>
+
+  <div class="work modal">
+    <div class="modal-content">
+      <button class="modal-exit-button">✕</button>
+      <h1 class="modal-title">Work</h1>
+      <p>Hello world this is a header</p>
+      <p>Hello world this is a paragraph text</p>
+    </div>
+  </div>
+
+  <div class="about modal">
+    <div class="modal-content">
+      <button class="modal-exit-button">✕</button>
+      <h1 class="modal-title">About</h1>
+      <p>Hello world this is a header</p>
+    </div>
+  </div>
+
+  <div class="contact modal">
+    <div class="modal-content">
+      <button class="modal-exit-button">✕</button>
+      <h1 class="modal-title">Contact Me!!!</h1>
+      <p>Hello world this is a header</p>
+      <p>Hello world this is a paragraph text</p>
+    </div>
+  </div>
+
+  <div id="experience">
+    <canvas id="experience-canvas" class="experience-canvas"></canvas>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
