@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "./styles/fonts.scss";
 @use "./styles/reset.scss";
 @use "./styles/variables.scss" as vars;
@@ -8,6 +9,62 @@
   box-sizing: border-box;
   font-family: "Motley Forces", Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
+$themes: (
+  light: (base-dark-purple: #6c3f7c,
+    base-purple: #6e5e9c,
+    base-purple-200: #cdb3d6,
+    base-pink: #eedfe4,
+    base-light-purple: #ead7ef,
+    header-text: #6c3f7c,
+    text: #020202,
+    svgs: #6e5e9c,
+  ),
+  dark: (base-dark-purple: #ddd6d6,
+    base-purple: #2a0f4e,
+    base-purple-200: #62416d,
+    base-pink: #8b4e62,
+    base-light-purple: #401d49,
+    header-text: #e6dede,
+    text: #e6dede,
+    svgs: #e6dede,
+  ),
+);
+
+// Theme mixins
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .#{$theme}-theme & {
+      $theme-map: (
+        ) !global;
+
+      @each $key, $value in $map {
+        $theme-map: map.merge($theme-map,
+            ($key: $value,
+            )) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map.get($theme-map, $key
+);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -31,57 +88,167 @@
   #experience-canvas {
     height: 100%;
     width: 100%;
+    z-index: 2;
   }
 }
 
 
 //Modals
 .modal {
-  position: fixed;
+  @include vars.centered;
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-
-  display: none;
-
+  max-width: 1200px;
   width: 90%;
-  max-width: 700px;
-
+  transform: translate(-50%, -50%);
+  font-size: 2.2rem;
   z-index: 9999;
+  padding: 8px;
+  border-radius: 30px;
+  display: none;
+  border: 8px solid vars.$base-dark-blue;
+}
+
+.modal-wrapper {
+  @include vars.centered;
+  width: 100%;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sm-margin-top {
+  margin-top: 12px;
 }
 
 .modal-content {
   position: relative;
-
-  padding: 40px;
-
-  background: vars.$base-light-peach;
-
-  border-radius: 12px;
+  width: 100%;
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding-right: 10px;
+  // padding: 40px;
+  -webkit-overflow-scrolling: touch;
+  background: vars.$base-white;
+  border-radius: 10px;
 
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.modal-exit-button {
-  position: absolute;
+.work .modal-content {
+  height: 550px;
+  overflow: hidden; // 🔥 prevents whole modal scrolling
+}
 
-  top: -15px;
-  left: -15px;
+.about .modal-content {
+  height: 550px;
+}
 
+.contact .modal-content {
+  height: 170px;
+  overflow: visible;
+}
+
+.modal-content-wrapper {
+  height: 100%;
+  // overflow-y: auto;
+  overflow: hidden;
+  padding-right: 10px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.contact .modal-content-wrapper {
+  overflow: visible;
+}
+
+.contact-button-wrapper {
+  @include vars.centered;
+  margin-top: 24px;
+  justify-content: space-between;
+}
+
+.contact-svg {
   width: 40px;
   height: 40px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  background: #8a63ff;
-  color: white;
-
-  font-size: 18px;
-
   cursor: pointer;
+
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+
+
+.modal-title {
+  @include vars.centered;
+  top: 3px;
+  padding: 3px 30px;
+  border-radius: 3rem;
+  color: vars.$base-dark-blue;
+  font-family: sans-serif;
+  font: bolder;
+  font-weight: bolder;
+  background-color: vars.$base-biege-200;
+  background-position: 1px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 4px;
+
+  margin-bottom: 5px; // 👈 adjust this
+}
+
+.modal-paragraph-header {
+  font-size: 1.5rem;
+  margin-top: 8px;
+}
+
+.modal-paragraph-text {
+  max-width: 500px;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.modal-exit-button {
+  @include vars.centered;
+  position: absolute;
+  top: -2.3rem;
+  left: -2.3rem;
+  border: 8px solid vars.$base-dark-blue;
+  background-color: vars.$base-light-peach;
+  padding: 15px;
+  border-radius: 1.2rem;
+  cursor: pointer;
+  transform: rotate(-15deg);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 10;
+
+  &:hover {
+    transform: rotate(45deg) scale(1.3);
+  }
+}
+
+.exit-button-svg {
+  width: 40px;
+  height: 40px;
+  color: vars.$base-purple;
+}
+
+// .modal-exit-button {
+//   position: absolute;
+//   top: 1px; // ✅ inside now
+//   right: 1px; // ✅ move to top-right (cleaner UI)
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 50%;
+//   background: #8a63ff;
+//   color: white;
+//   border: 2px solid #8a63ff;
+//   font-size: 18px;
+//   cursor: pointer;
+//   z-index: 10; // ensures it's above content
+// }
+
+// LOADING SCREEN
 
 #loading-screen {
   position: fixed;
@@ -104,7 +271,7 @@
 
     .progress-bar-container {
       width: 300px;
-      height: 8px;
+      height: 20px;
       background: rgba(0, 0, 0, 0.1);
       border-radius: 4px;
       overflow: hidden;
@@ -113,15 +280,198 @@
       #progress-bar {
         width: 0%;
         height: 100%;
-        background: #8a63ff; // Matching your exit button color
+        background: #4697da; // Matching your exit button color
         transition: width 0.3s;
       }
     }
 
     #progress-text {
       margin-top: 10px;
-      color: #4a4a4a;
+      font-family: "Motley Forces", sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      color: #effffd;
       font-weight: bold;
     }
   }
+}
+
+.list-text,
+.list-text-2,
+.modal-paragraph-header,
+.modal-paragraph-header-2,
+.modal-paragraph-text {
+  @include themed() {
+    color: t("text");
+  }
+}
+
+.modal-exit-button {
+  @include themed() {
+    border-color: t("base-purple");
+    background-color: t("base-light-purple");
+  }
+}
+
+.exit-button-svg {
+  @include themed() {
+    color: t("svgs");
+  }
+}
+
+.contact-svg {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.linkedin {
+  width: 60px;
+  height: 60px;
+}
+
+.github {
+  width: 60px;
+  height: 60px;
+}
+
+.instagram {
+  width: 63px;
+  height: 63px;
+}
+
+.mail {
+  width: 68px;
+  height: 68px;
+}
+
+.xsm-margin-top {
+  margin: 12px;
+}
+
+.sm-font {
+  font-size: 1.2rem;
+}
+
+.slider-container {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; // ✅ only hide horizontal
+  overflow-y: visible; // ✅ allow scrollbar
+  position: relative;
+  padding: 0;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  background: #8a63ff;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+.slider-track {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.slide::-webkit-scrollbar {
+  width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slide::-webkit-scrollbar-thumb {
+  background: #433b5c;
+  border-radius: 10px;
+}
+
+.slide-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.slide-scroll::-webkit-scrollbar-thumb {
+  background: #8a63ff;
+  border-radius: 10px;
+
+  border: 2px solid transparent; // 👈 THIS is the trick
+  background-clip: content-box; // 👈 creates spacing effect
+}
+
+.slide {
+  flex: 0 0 100%; // 🔥 This is the "Anchor". It forces exactly 1/1 width.
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  padding-top: 6px;
+  box-sizing: border-box;
+}
+
+.slide img {
+  max-width: 520px;
+  height: auto;
+  border-radius: 24px;
+  flex-shrink: 0; // 🔥 prevents image shrinking weirdly
+  object-fit: cover;
+  border: 8px solid vars.$base-dark-blue;
+}
+
+.slide-scroll {
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  padding-right: 60px;
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+
+// Text Style
+
+body {
+  font-family: Inter, system-ui, sans-serif;
+}
+
+h1,
+h2 {
+  font-family: "Motley Forces", sans-serif;
+}
+
+p,
+ul,
+li {
+  font-family: "Shifty Notes", sans-serif;
+
+}
+
+.num {
+  font-family: Inter, sans-serif;
+  font-weight: bold;
 }

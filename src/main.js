@@ -109,8 +109,10 @@ const loadingManager = new THREE.LoadingManager(
     // Progress: Update the bar
     (itemUrl, itemsLoaded, itemsTotal) => {
         const progress = (itemsLoaded / itemsTotal) * 100;
-        progressBar.style.width = progress + "%";
-        progressText.innerText = Math.round(progress) + "%";
+        if (progressBar && progressText) {
+            progressBar.style.width = progress + "%";
+            progressText.innerText = "Loading...";
+        }
     }
 );
 
@@ -250,6 +252,39 @@ let plank1,
 
 window.addEventListener("click", handleRaycasterInteraction);
 
+// const slider = document.querySelector(".work-gallery");
+
+// let isDown = false;
+// let SliderStartX;
+// let scrollLeft;
+
+// if (slider) {
+//     slider.addEventListener("mousedown", (e) => {
+//         isDown = true;
+//         slider.classList.add("active");
+//         SliderStartX = e.clientX;
+//         scrollLeft = slider.scrollLeft;
+//     });
+
+//     slider.addEventListener("mouseleave", () => {
+//         isDown = false;
+//         slider.classList.remove("active");
+//     });
+
+//     slider.addEventListener("mouseup", () => {
+//         isDown = false;
+//         slider.classList.remove("active");
+//     });
+
+//     slider.addEventListener("mousemove", (e) => {
+//         if (!isDown) return;
+//         e.preventDefault();
+//         const x = e.clientX;
+//         const walk = (x - SliderStartX) * 2; // speed
+//         slider.scrollLeft = scrollLeft - walk;
+//     });
+// }
+
 loader.load("/models/Room_Portfolio_V4.glb", (glb) => {
     glb.scene.traverse((child) => {
         if (child.isMesh) {
@@ -329,7 +364,7 @@ loader.load("/models/Room_Portfolio_V4.glb", (glb) => {
     });
 
     scene.add(glb.scene);
-    // playIntroAnimation();
+    playIntroAnimation();
 });
 
 function playIntroAnimation() {
@@ -554,3 +589,41 @@ const render = () => {
 };
 
 render();
+
+const track = document.querySelector(".slider-track");
+const slides = document.querySelectorAll(".work .slide");
+const nextBtn = document.querySelector(".next");
+const prevBtn = document.querySelector(".prev");
+
+let currentIndex = 0;
+
+function updateSlider() {
+    gsap.killTweensOf(track);
+
+    gsap.to(track, {
+        // Move by 100% per index instead of measuring pixels
+        xPercent: -currentIndex * 100,
+        duration: 0.6,
+        ease: "power3.out"
+    });
+}
+nextBtn.addEventListener("click", () => {
+    currentIndex++;
+    // If we reach the end of the 3 work slides, loop back to the first one
+    if (currentIndex >= slides.length) {
+        currentIndex = 0;
+    }
+    updateSlider();
+});
+
+prevBtn.addEventListener("click", () => {
+    currentIndex--;
+
+    if (currentIndex < 0) {
+        currentIndex = slides.length - 1;
+    }
+
+    updateSlider();
+});
+
+console.log("Slides:", slides.length);

@@ -1,7 +1,22 @@
 $base-biege: #F5F5DC;
+$base-biege-200: #F5F5DC;
 $base-blue: #87CEEB;
 $base-light-peach: #fadabb;
+
+$base-dark-purple: #6c3f7c;
+$base-purple: #6e5e9c;
+$base-purple-200: #cdb3d6;
+$base-pink: #eedfe4;
+$base-light-purple: #ead7ef;
 
 
 $base-black: #080808;
 $base-white: #f1f1f1;
+$base-green: #538365;
+$base-dark-blue: #415c96;
+
+@mixin centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
